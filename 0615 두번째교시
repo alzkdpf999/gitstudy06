@@ -1,3 +1,63 @@
-키의 종류 primary key(기본키) 
-  - 중복불가(유일한 값)
-  - NULL 불가
+o 키의 종류 
+ -primary key(기본키) 
+   - 중복불가(유일한 값)
+   - NULL 불가
+ - 후보키(candidate key)
+ - 외래키(foreign key)
+ - 복합키(composite key)
+ 
+o 연산자의 종류
+ - 산술 연산자
+ - 관계 연산자
+ - 논리 연산자
+ - BETWEEN AND 연산자
+ - 논리 부정 연산자 
+ - IN 연산자
+ - LIKE 연산자와 와일드 카드
+ - IS NULL, IS NOT NULL
+
+o 산술 연산자 (Arithmetic operator)
+ - 수학 연산을 사용하기 위한 연산자
+ - 일반 프로그래밍언어에서 제공되는 나머지 연산자는 SQL문에서는 제공되지 않는다.
+ - 나머지값을 구하기 위해서는 mod()함수를 제공한다. ex) mod(2,1) -> 0 , mod(3,2) -> 1
+ 
+o 관계 연산자 (비교 연산자) (Relational operator) 
+ - 두 값을 비교하기 위한 연산자
+ - 관계 연산자는 좌변과 우변의 값을 비교해서 크기 관계를 평가하며, 
+   그 결과를 참(True)과 거짓(False)으로 나타낸다.
+ - 왼쪽 피연산자를 기준으로 평가
+ - <> (같지 않다)를 실무에서 가장 많이 사용
+ 
+o 논리 연산자 (Logical Operator)
+ - 두 개 이상의 관계 연산자를 묶을 때 사용하는 연산자 ex) AND , OR, NOT
+  T AND T -> T   |   T OR T -> T   |   NOT T -> F
+  T AND F -> F   |   T OR F -> T   |   NOT F -> T
+  F AND T -> F   |   F OR T -> T  
+  F AND F -> F   |   F OR F -> F 
+  
+o BETWEEN AND 연산자
+ - 컬럼명 BETWEEN A AND B      <-- A <= 값 <= B
+ - 컬럼명 NOT BETWEEN A AND B  <-- 값 <= A, 값 >= B   
+ 
+o IN 연산자 
+ - 컬럼명 IN (A, B, C, .....) --> 값이 A, B, C, .....가 일치하면 참 불일치하면 거짓
+ - 컬럼명 NOT IN (A, B, C, .....) --> 값이 A, B, C, .....가 불일치 참 일치하면 거짓
+ 
+o LIKE 연산자와 와일드 카드
+ - LIKE 연산자는 검색하는 값을 정확히 모를 경우에 사용한다.
+ - 특히 게시판에서 특정 단어의 검색을 할 때 사용한다.
+ - 컬럼명 LIKE 패턴
+ - 컬럼명 NOT LIKE 패턴 
+   - 패턴에는 다음과 같이 두 가지 와일드 카드가 사용된다.
+   - <와일드 카드>    <설명>
+     - % : 문자가 없거나 하나 이상의 문자에 어떤 값이 와도 상관없다.
+     - _ : 하나의 문자에 해당하며 어떤 문자가 와도 상관없다.
+   
+o IS NULL, IS NOT NULL
+ - IS NULL, IS NOT NULL은 NULL을 위한 연산자이다. 
+ - NULL은 값이 없음을 나타내기 때문에 NULL은 연산을 하거나 비교하는 것이 불가능하다.
+ - NULL인지 아닌지 판단하기 위해 사용
+ 
+ - NULL 값을 연산자 = 로 판단할 수 없기 때문에 EMP 테이블에서 커미션(COMM)의 NULL인 사원을 찾지 못한다.
+ - SQL> SELECT * FROM EMP WHERE COMM='';   -- 오라클에서는 안된다. 단 MySQL, MariaDB에서 가능하다.
+ - SQL> SELECT * FROM EMP WHERE COMM=NULL; -- 오라클에서는 안된다. 단 MySQL, MariaDB에서 가능하다.

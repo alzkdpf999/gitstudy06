@@ -36,4 +36,23 @@ SQL문은 대/소문자 구분이 없지만 테이블 안에 저장된 데이터
   ※ TRUNCATE 에 의해서 모든 데이터가 삭제되었다.
      데이터가 초기화되기 때문에 DELETE로 삭제하는 것과는 다르다.
      DROP은 테이블 자체가 삭제 
+     TRUNCATE는 복구 불가 DELETE는 복구 가능
        
+○ 오라클 10g 이상 부터는 휴지통(recyclebin)이라는 것이 존재하는데 DROP(삭제)를 한 테이블들은 바로
+○ 지워지는 것이 아니라 휴지통으로 들어간다. 
+     SELECT * FROM TAB;
+
+○ 휴지통의 테이블들 조회
+     SHOW RECYCLEBIN;
+
+○ 휴지통의 테이블 복원
+    FLASHBACK TABLE 테이블명 TO BEFORE DROP;
+
+○ 휴지통 지우기
+    PURGE RECYCLEBIN;
+
+○ DBA 권한으로 휴지통 내 테이블 전체 삭제
+    PURGE DBA_RECYCLEBIN;
+
+○ 휴지통에 보내지 않고 테이블 완전 삭제
+○ 형식: DROP TABLE 테이블명 PURGE;

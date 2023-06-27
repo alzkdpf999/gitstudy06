@@ -13,3 +13,16 @@
  o 다음 시퀀스 조회: SELECT 시퀀스명.NEXTVAL FROM DUAL;
  o 시퀀스 수정: ALTER SEQUENCE 시퀀스명;
  o 시퀀스 삭제: DROP SEQUENCE 시퀀스명;
+ ○ 시퀀스명.CURRVAL: 현재 번호
+ ○ 시퀀스명.NEXTVAL: 다음 번호
+   시노님(synonym)은 동의어로 테이블, 시퀀스, 뷰등의 객체 이름 대신 다른 이름을 부여해서 사용하는 객체이다.
+   예로 테이블명이 길면 사용할 때 불편하기 때문에 간단하게 줄여서 짧은 이름으로 사용하거나 실제 테이블명을 감출 때도 사용한다.
+   시노님은 권한이 없으면 아래와 같은 에러가 발생하므로 반드시 권한을 부여해야 한다. 
+ . SYS or SYTEM 사용자가 SCOTT 계정에 시노님을 사용할 수 있게 권한을 부여한다.
+    ORA-01031: insufficient privileges
+   이것을 해줘야 함 scott는 접속자이름 
+    GRANT CREATE SYNONYM TO SCOTT;
+    GRANT CREATE PUBLIC SYNONYM TO SCOTT;
+   시노님 생성 형식:
+   CREATE [PUBLIC] SYNONYM 동의어명
+   FOR [사용자.][객체명];

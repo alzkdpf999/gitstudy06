@@ -1,0 +1,15 @@
+ ○ 시퀀스의 생성 형식:
+    CREATE SEQUENCE 시퀀스명
+    [INCREMENT BY n]          <-- 시퀀스 실행 시 증가시킬 값
+    [START WITH n]            <-- 시퀀스의 시작값 (MINVALUE와 같거나 커야 한다)
+    [MINVALUE n | NOMINVALUE] <-- 시퀀스가 시작되는 최솟값
+    [MAXVALUE n | NOMAXVALUE] <-- 시퀀스가 끝나는 최댓값
+    [NOCYCLE | CYCLE] <-- NOCYCLE (반복안함), CYCLE(시퀀스의 최댓값에 도달 시 최솟값 1부터 다시 시작)
+    [NOCACHE | CACHE] <-- NOCACHE(사용안함), CACHE(값을 미리 메모리에 할당해서 속도가 빠르며, 동시 사용자가 많을 경우 유리, 옵션을 사용하지 않으면 기본값은 20이다.)
+    [NOORDER | ORDER] <-- NOORDER(사용안함), ORDER(요청 순서로 값을 생성하여 발생 순서를 보장하지만 조금의 시스템 부하가 있음)
+ o 시퀀스 생성: CREATE SEQUENCE 시퀀스명 [옵션 ...]
+ o 생성된 시퀀스 조회: SELECT * FROM USER_SEQUENCES;
+ o 현재 시퀀스 조회: SELECT 시퀀스명.CURRVAL FROM DUAL;
+ o 다음 시퀀스 조회: SELECT 시퀀스명.NEXTVAL FROM DUAL;
+ o 시퀀스 수정: ALTER SEQUENCE 시퀀스명;
+ o 시퀀스 삭제: DROP SEQUENCE 시퀀스명;

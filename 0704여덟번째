@@ -1,1 +1,276 @@
+사용자 관리
+ 오라클 데이터베이스에서는 데이터베이스에 접속하여 데이터를 관리하는 계정을 사용자(USER)로 표현한다.
+    o 사용자 종류 
+      . 관리자(sysdba라는 권한을 가진 관리자)
+        - sys, system
+      . 일반 사용자
+        - scott, ...
+ 데이터베이스에서 사용자가 필요한 이유
+  DBMS는 애플리케이션에서 접속해서 사용할 수 있으며 데이터베이스에서 사용자를 생성하고 관리하는 것은 데이터베이스의 보안, 효율성, 추적성 등을 강화하며 
+  사용자들이 데이터에 안전하게 접근하고 활용할 수 있도록 도와준다.
+
+  . 접근 제어: 
+  사용자를 생성하여 데이터베이스에 대한 접근을 제어할 수 있다. 
+  각 사용자는 고유한 식별자와 권한을 가지며 이를 통해 데이터베이스의 특정 부분 또는 기능에 대한 접근 권한을 설정할 수 있다. 
+  이는 데이터의 보안과 무결성을 유지하는 데 도움이 된다.
+
+  . 데이터 보안: 
+  사용자를 생성하여 데이터베이스에 접근하는 사람들을 추적하고 식별할 수 있다. 
+  각 사용자는 자신이 소유한 데이터나 특정 데이터에 대한 접근 권한을 가지며 데이터의 무단 액세스를 방지할 수 있다. 
+  또한 사용자 계정을 통해 암호화, 접근 제어, 감사 추적 등의 보안 메커니즘을 적용할 수 있다.
+
+  . 작업 추적과 감사: 
+  사용자를 생성하여 데이터베이스 작업을 추적하고 감사할 수 있다. 
+  각 사용자의 작업 로그를 유지하면 데이터 변경 이력을 추적하고 문제가 발생했을 때 원인을 분석할 수 있다. 
+  또한 감사 추적은 규정 준수와 감사 요구 사항을 충족하는 데 도움을 준다.
+
+  . 작업 분리: 
+  다중 사용자 환경에서 사용자를 생성하면 작업을 분리하고 격리할 수 있다. 
+  각 사용자는 독립적인 작업 공간을 가지며, 다른 사용자와의 작업 충돌을 방지하고 자원 사용을 효율적으로 관리할 수 있다.
+
+  . 개인화된 환경: 
+  사용자를 생성하여 개인화된 환경을 제공할 수 있다. 
+  각 사용자는 자신의 설정, 선호도, 사용 권한 등을 설정할 수 있으며, 이를 통해 사용자 경험을 향상시킬 수 있다.
+
+o 데이터베이스 스키마란?
+데이터베이스에서 데이터 간 관계, 데이터 구조, 제약 조건 등 데이터를 저장 및 관리하기 위해 정의한 데이터베이스 구조의 범위를 스키마(SCHEMA)를 통해 그룹 단위로 분류한다.
+오라클 데이터베이스에서는 스키마와 사용자를 구별하지 않고 사용하기도 한다.
+
+  . 사용자: 데이터를 사용 및 관리하기 위해 오라클 데이터 베이스에 접속하는 객체
+  . 스키마: 오라클 데이터베이스에 접속한 사용자와 연결된 객체
+
+  . SCOTT: 사용자
+  . SCOTT의 스키마: SCOTT이 계정이 생성한 모든 객체로 테이블, 뷰, 제약 조건, 시퀀스, 시노님 등 ... 
+
+데이터베이스 관리자가 가지고 있는 시스템 권한
+  . DBA(DateBase Administrator) : DB 관리자
+  . CREATE USER: 사용자 생성 권한
+  . DROP   USER: 사용자 삭제 권한
+  . ALTER  USER: 사용자 수정 권한
+  . DROP ANY TABLE: 임의의 테이블을 삭제할 수 있는 권한
+  .   :
+  .   :(생략)
+
+o 사용자를 위한 시스템 권한
+  . CREATE SESSION: 데이터베이스에 접속할 수 있는 권한
+  . CREATE TABLE: 사용자 스키마에서 테이블을 생성할 수 있는 권한
+  . CREATE VIEW: 사용자 스키마에서 뷰를 생성할 수 있는 권한
+  . CREATE SEQUENCE: 사용자 스키마에서 시퀀스를 생성할 수 있는 권한
+  . CREATE PROCEDURE: 사용자 스키마에서 함수를 생성할 수 있는 권한
+  .   :
+  .   :(생략)
+o GRANT [시스템 권한] TO [사용자명/롤/PUBLIC]
+  [WITH ADMIN OPTION]
+  DBA 권한을 가진 SYS or SYSTEM 사용자로 실행한다. 
+  다른 사용자의 권한 정보를 조회하기 위해서는 DBA_SYS_PRIVS 뷰를 사용해야 한다.
+  SELECT * FROM DBA_SYS_PRIVS WHERE GRANTEE='SCOTT';
+
+o 테이블스페이스(TableSpace)
+테이블스페이스(TableSpace)는 오라클 데이터베이스에서 논리적인 저장 공간을 관리하는 단위이고 하나 이상의 데이터 파일로 구성되며 
+데이터 파일은 실제 데이터베이스 객체(테이블, 인덱스, 뷰 등)의 데이터를 저장하는 데 사용된다.
+
+o 테이블스페이스의 종류 
+  . 시스템 테이블스페이스: 시스템 관련 정보가 저장되는 영역
+  . 사용자 테이블스페이스: 사용자 데이터가 저장되는 영역
+
+o 사용자 생성 형식
+CREATE USER <사용자명>                        <-- 필수
+IDENTIFIED BY <비밀번호>                      <-- 필수
+DEFAULT TABLESPACE 테이블 스페이스명          <-- 선택
+TEMPORARY TABLESPACE 테이블 스페이스(그룹)명  <-- 선택
+PROFILE 프로파일명                            <-- 선택
+PASSWORD EXPIRE                               <-- 선택
+ACCOUNT [LOCK/UNLOCK];                        <-- 선택
+
+o 테이블 스페이스 생성 형식:
+CREATE TABLESPACE 테이블스페이스명
+DATAFILE '/경로/테이블스페이스파일명.dbf'
+SIZE 초기용량(100m,1g 등) REUSE
+AUTOEXTEND ON NEXT 자동증가 용량
+MAXSIZE UNLIMITED;
+
+o 테이블 스페이스 삭제 형식:
+DROP TABLESAPCE 테이블스페이스명
+
+o 권한 삭제 형식:
+REVOKE 
+
+o RESOURCE
+RESOURCE : 사용자 객체(테이블, 뷰, 인덱스)를 생성할 수 있도록 시스템 권한을 묶어 놓음. 
+- CREATE CLUSTER, CREATE PROCEDURE, CREATE SEQUENCE, CREATE TABLE, CREATE TRIGGER
+
+** 권한 종류
+
+CONNECT: 사용자가 데이터베이스에 접속 가능하도록 하기 위해 다음과 같이 가장 기본적인 시스템 권한 
+8가지를 묶어 놓음. 
+- ALTER SESSION,  CREATE CLUSTER, CREATE DATABASE LINK, CREATE SEQUENCE, 
+- CREATE SESSION, CREATE SYNONYM, CREATE TABLE, CREATE VIEW
+
+RESOURCE
+RESOURCE : 사용자 객체(테이블, 뷰, 인덱스)를 생성할 수 있도록 시스템 권한을 묶어 놓음. 
+- CREATE CLUSTER, CREATE PROCEDURE, CREATE SEQUENCE, CREATE TABLE, CREATE TRIGGER
+
+DBA : 사용자들이 소유한 데이터베이스를 관리, 사용자를 생성, 변경, 삭제할 수 있도록 하는 모든 권한을 부여
+
+-- 실습
+-- 사용자 생성 (CREATE USER)
+-- 사용자 권한 부여(CREATE SESSION, CREATE TABLE)
+
+-- CONN / AS SYSDBA  -- SYS 사용자로 접속한다.
+-- CREATE USER ORACLEUSER IDENTIFIED BY 111111; -- 사용자를 생성한다. 사용자: ORACLEUSER, 비밀번호: 111111
+-- GRANT CREATE SESSION TO ORACLEUSER;  -- 데이터베이스 접속 권한을 부여한다.
+-- GRANT CREATE TABLE TO ORACLEUSER; -- 테이블 생성 권한을 부여한다.
+-- GRANT UNLIMITED TABLESPACE TO ORACLEUSER; -- ORACLEUSER 사용자에게 모든 tablespace 권한을 부여한다.
+
+무제한 테이블스페이스 권한 부여
+  . GRANT UNLIMITED TABLESPACE TO ORACLEUSER;
+  . ORACLEUSER 사용자에게 무제한 테이블스페이스 권한을 부여하는 명령어로
+  . 이 권한을 부여하면 ORACLEUSER 사용자는 테이블스페이스에 대한 용량 제한 없이 데이터를 저장할 수 있다.
+  . 무제한 테이블스페이스 권한은 주로 데이터베이스 관리자가 특정 사용자에게 부여하는 권한이며 
+  . 이를 통해 사용자는 자신이 속한 테이블스페이스에 대한 용량 제한 없이 데이터를 저장하고 관리할 수 있다.
+  . 일반 사용자에게 무제한 테이블스페이스 사용 권한을 무제한으로 부여 할 때에는 신중하게 판단해야 한다.
+
+무제한 테이블스페이스 권한 주의
+  . 사용자가 하면 데이터베이스의 용량을 제어하기 어렵다. 
+  . 디스크 공간 부족 문제가 발생할 수 있다. 
+
+무제한 테이블스페이스 권한 삭제
+  . ORACLEUSER에게 무제한 테이블스페이스 권한을 해제하기 위해서는 REVOKE 문을 실행한다.
+  . REVOKE UNLIMITED TABLESPACE FROM ORACLEUSER;
+
+Oracle 데이터베이스에서 사용자를 삭제한다.
+사용자 삭제 작업은 데이터베이스에 대한 관리 권한을 가진 사용자나 SYSDBA, SYSOPER 권한을 가진 사용자로 로그인해서 실행한다.
+형식: DROP USER ORACLEUSER [CASCADE]; 
+
+!!! 주의 !!!
+CASCADE 옵션은 사용자와 관련된 모든 객체를 삭제하기 때문에 신중하게 사용해야 한다. 
+삭제 작업은 되돌릴 수 없으므로 삭제할 사용자와 관련된 객체를 정확히 확인한 후에 명령을 실행한다.
+
+!!! 사용자를 삭제할 때 사용자가 오라클 데이터베이스에 로그인되어 있다면 삭제되지 않는다. !!! 
+
+실습> 사용자 상태 변경하기
+
+만료된 사용자를 로그인 시키기
+
+사용자 상태 정보
+USERNAME  EXPIRY_DATE  ACCOUNT_STATUS
+HR        23/07/01     EXPIRED & LOCKED
+
+아래 순서대롤 진행한다.
+  . 관리자 로그인: SYS or SYSTEM 사용자로 로그인한다.
+  . 사용자 상태 확인: SELECT USERNAME, EXPIRY_DATE, ACCOUNT_STATUS FROM DBA_USERS;
+  . 사용자 잠금 해제: ALTER USER <사용자> ACCOUNT UNLOCK;
+  . 사용자 비밀번호 설정: ALTER USER <사용자> IDENTIFIED BY <비밀번호>;
+  . 사용자 로그인: CONN 사용자/비밀번호
+
+1. 관리자 로그인
+SYS or SYSTEM 사용자에게 로그인한다.
+> SQLPLUS / as sysdba
+SQL> SHOW USER
+USER is "SYS"
+
+2. 사용자 상태 확인
+사용자 상태 정보를 확인한다.
+특정 사용자를 확인하기 위해서는 WHERE USERNAME='사용자' 로 검색한다.
+SQL> SELECT USERNAME, EXPIRY_DATE, ACCOUNT_STATUS FROM DBA_USERS;
+SQL> SELECT USERNAME, EXPIRY_DATE, ACCOUNT_STATUS FROM DBA_USERS WHERE USERNAME='HR';
+
+사용자의 테이블스페이스까지 확인한다.
+SQL> SELECT USERNAME, EXPIRY_DATE, ACCOUNT_STATUS, DEFAULT_TABLESPACE FROM DBA_USERS;
+SQL> SELECT USERNAME, EXPIRY_DATE, ACCOUNT_STATUS, DEFAULT_TABLESPACE FROM DBA_USERS WHERE USERNAME='HR';
+
+3. 사용자 잠금 해제
+HR 사용자의 잠금을 해제한다.
+이때 HR 사용자의 ACCOUNT_STATUS 컬럼의 값이 EXPIRED & LOCKED 에서 EXPIRED 로 변경된다.
+SQL> ALTER USER HR ACCOUNT UNLOCK;
+
+4. 사용자 비밀번호 설정 
+HR 사용자의 비밀번호를 12345로 변경한다.
+이때 HR ACCOUNT_STATUS 가 EXPIRED 에서 OPEN 으로 변경된다.
+SQL> ALTER USER HR IDENTIFIED BY 12345;
+
+5. 사용자 로그인
+SQL> CONN HR/12345
+SQL> SHOW USER
+USER is "HR"
+SQL> exit
+
+o 테이블스페이스
+Oracle에서 데이터들은 물리적으로 Data file 이라는 물리적 파일 형태로 저장하고 이러한 Data file 들이 하나 이상 모여서 TABLESPACE 라는 논리적 저장 공간을 제공한다.
+TABLESPACE는 하나의 데이터베이스 안에 가장 큰 논리적 저장공간으로 업무의 단위나 사용용도에 따라 여러 개의 TABLESPACE로 분리하여 관리된다.
+
+o 오라클 11gXE 테이블스페이스 물리적 위치 
+  . Windows: C:\oraclexe\app\oracle\oradata\XE
+  . Linux  : /u01/app/oracle/oradata/XE
+
+o 테이블스페이스 종류
+
+    Permanent                  Undo                 Temporary
+    TABLESPACE              TABLESPACE              TABLESPACE
++=================+     +=================+     +=================+
+|                 |     |                 |     |                 |
+|  SYSTEM SYSAUX  |     |      UNDO       |     |      TEMP       |
+|                 |     |                 |     |                 |
+|  USERS  TEST    |     +=================+     +=================+
+|                 |
++=================+
+
+. Permanent TABLESPACE
+    데이터가 저장되는데 사용되는 공간으로 영구적으로 보존되는 객체들을 저장하기 위해 사용되는 테이블스페이스이다.
+    SYSTEM, SYSAUX 테이블스페이스: 데이터베이스가 운영되기 위해 꼭 필요한 테이블스페이스
+    USERS나 TEST 테이블스페이스  : 임의의 이름을 지정하여 원하는 데이터를 저장하는 테이블스페이스
+
+  . Permanent TABLESPACE >> SYSTEM(필수 요소)
+    데이터베이스의 운영에 필요한 기본 정보를 담고 있는 Data Dictionary Table이 저장되는 공간으로 데이터베이스에서 가장 중요한 TABLESPACE 이다. 
+    중요한 데이터가 저장되는 만큼 문제가 생길 경우 자동으로 데이터베이스는 종료될 수 있고 일반 사용자들의 오브젝트들을 저장하지 않는 것을 권장한다. 
+    혹여나 사용자들의 오브젝트에 문제가 생겨 데이터베이스가 종료되거나 완벽한 복구가 불가능한 상황이 발생할 수 있다.
+
+  . Permanent TABLESPACE >> SYSAUX(필수 요소)
+    SYSAUX TABLESPACE는 SYSTEM TABLESPACE의 보조로 기존에 SYSTEM TABLESPACE에 있는 다양한 유틸리티 및 기능들 분리하여 저장한 공간이다.
+    SYSTEM과 마찬가지로 데이터베이스 운영에 필수적으로 있어야하는 TABLESPA이다. SYSAUX TABLESPACE에 문제가 생길 경우 시스템상에는 별 다른 문제가 없지만 
+    SYSAUX TABLESPACE에 저장되어 있는 요소들의 기능들은 사용할 수 없게된다. 대표적으로 AWR(Auto Workload Repository)기능이 있다.
+
+  . Undo TABLESPACE(필수 요소)
+    읽기 일관성을 유지하기 위해 사용되는 TABLESPACE이다. 데이터베이스 운영 중 많은 사용자들에게서 DML 작업이 이루어진 다. 
+    이때 Rollback하게 되는 경우를 대비하여 DML 작업이 발생했을 때 수정 이전의 값에 대한 정보를 UNDO Segment에 저장한다. 이러한 Undo Segment에 대한 관리 공간으로 
+    Undo TABLESPACE를 사용하게되고 데이터베이스 운영에 있어서 필수적으로 적어도 하나의 Undo TABLESPACE가 필요하다.
+
+  . Temporary TABLESPACE(필수 요소)
+    사용자 쿼리의 요청으로 정렬하는 작업이 필요한 경우 메모리에 부담을 덜어주기 위해 사용되는 공간으로 필수적으로 있어야 하는 테이블스페이스이다.
+
+테이블스페이스 생성하기
+
+TABLESPACE 생성 옵션은 정말 많이 있지만 그 중에서 가장 많이 사용되는 옵션만 설명한다.
+CREATE 
+TABLESPACE <테이블스페이스명>
+DATAFILE <'데이터파일경로'> SIZE <파일크기>
+[REUSE]
+[AUTOEXTEND {ON|OFF}] 
+[MAXSIZE 최대크기] 
+  :
+  :(생략)
+
+1. 테이블스페이스 생성
+
+ CREATE TABLESPACE ORACLEUSERTBS
+     DATAFILE 'C:\ORACLEXE\APP\ORACLE\ORADATA\XE\ORACLEUSERTBS.DBF'
+     SIZE 300M; --> 초기용량 300메가
+     -- SIZE 300m REUSE
+     -- AUTOEXTEND ON NEXT 1024k
+     -- MAXSIZE UNLIMITED; --> 제한없음을 주면 안좋음
+
+2. 사용자 생성
+ORACLEUSER를 생성하고 사용자가 테이블스페이스 ORACLEUSERTBS 테이블스페이스를 사용할 수 있게 지정한다.
+사용자: ORACLEUSER, 비밀번호: 111111, 테이블스페이스: ORACLEUSERTBS
+
+SQL> CREATE USER ORACLEUSER IDENTIFIED BY 111111  DEFAULT TABLESPACE ORACLEUSERTBS; 
+SQL> GRANT CREATE SESSION, CREATE TABLE TO ORACLEUSER;  
+SQL> GRANT CONNECT, RESOURCE to ORACLEUSER;
+
+사용자 스키마에 객체가 있을 경우에 사용자가 삭제되지 않는다.
+  SQL> DROP USER ORACLEUSER; -(이렇게 바꿔준다.)-> SQL> DROP USER ORACLEUSER CASCADE;
+이렇게 삭제를 했는데 ORACLEUSERTBS.DBF가 남아있으면
+  SQL> DROP TABLESPACE ORACLEUSERTBS INCLUDING CONTENTS AND DATAFILES;
+       실행하면 삭제된다.
+
 

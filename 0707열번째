@@ -529,4 +529,6 @@ SELECT myfunction('SCOTT') FROM DUAL; -- ANALIST
 SELECT myfunction(UPPER('smith')) AS 함수호출결과 FROM DUAL; -- CLERK
 SELECT myfunction(UPPER('king')) FROM DUAL; -- PRESIDENT
 SELECT myfunction(UPPER('MrK')) FROM DUAL; -- 사원 없음
-        
+
+-삭제 
+ DROP FUNCTION 함수명;

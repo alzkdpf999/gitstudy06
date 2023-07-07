@@ -505,7 +505,7 @@ CASE문
             WHERE ENAME = name;
         RETURN v_job;
     
-    EXCEPTION  --> 예외 처리가 없을시  NULL로 나옴
+    EXCEPTION  --> 예외 처리가 없을시  NULL 또는 오류 발생
         WHEN NO_DATA_FOUND THEN -- 사원이 존재하지 않을 경우
         RETURN '사원 없음.'; 
     
